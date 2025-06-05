@@ -42,8 +42,8 @@ This method will:
 
 - Create necessary configuration directories
 - Download and install the appropriate binary for your system
-- Set up shell completions
 - Create default configuration files
+- Set up basic directory structure
 
 ### Option 2: Direct Script Execution
 
@@ -79,7 +79,7 @@ sh -c "$(curl -sSfL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend
 
 Available versions:
 
-- v0.1.6 (latest) - Enhanced CLI interface, improved error handling, and comprehensive configuration management
+- v0.1.6 (latest) - Enhanced help system, advanced logging, progress tracking, DEX filtering, and Jupiter token integration
 - v0.1.5 - Multi-DEX pool discovery with Raydium, Orca, and Meteora support
 - v0.1.4 - Concurrent API fetching and batch upsert functionality
 - v0.1.3 - Supabase connectivity and database operations
@@ -209,26 +209,7 @@ console_logging = true
 
 ## Uninstallation
 
-You can uninstall recMEV Backend using the following commands:
-
-```bash
-# Basic uninstallation (keeps logs and config)
-recmev-backend uninstall
-
-# Full uninstallation (removes all data including logs and config)
-recmev-backend uninstall --all
-```
-
-**Platform-specific uninstallation notes:**
-
-- **Both Linux and macOS**: Files in system directories like `/usr/local/bin` require sudo privileges to remove
-- The uninstall command will automatically attempt to use sudo if available without password
-- If automatic sudo fails, you'll need to use explicit sudo:
-
-```bash
-# For Linux and macOS
-sudo recmev-backend uninstall --all
-```
+recMEV Backend does not currently include an automated uninstall command. To uninstall, follow the manual steps below:
 
 ### Manual Uninstallation
 
@@ -246,17 +227,10 @@ sudo rm /usr/local/bin/recmev-backend
 rm -rf ~/.recmev-backend
 ```
 
-3. Remove shell completions (if installed):
+3. Remove completion directory (if it exists):
 
 ```bash
-# Bash
-rm ~/.recmev-backend/completion/recmev-backend.bash
-
-# Zsh
-rm ~/.recmev-backend/completion/_recmev-backend
-
-# Fish
-rm ~/.recmev-backend/completion/recmev-backend.fish
+rm -rf ~/.recmev-backend/completion
 ```
 
 ## Post-Installation Verification
