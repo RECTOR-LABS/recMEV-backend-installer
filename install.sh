@@ -2,7 +2,7 @@
 set -e
 
 # Define version for download
-VERSION="v0.1.6"
+VERSION="v0.1.9"
 
 # Check if running on supported platform
 check_platform() {
@@ -62,26 +62,321 @@ install_completions() {
     COMPLETION_DIR="$HOME/.recmev-backend/completion"
     mkdir -p "$COMPLETION_DIR"
     
-    echo "📥 Setting up shell completion directory..."
+    # Detect OS for platform-specific handling
+    OS="$(uname -s)"
+    IS_MACOS=0
+    if [ "$OS" = "Darwin" ]; then
+        IS_MACOS=1
+    fi
     
-    # Note: recmev-backend binary does not have a built-in completions command
-    # We'll create a basic completion setup that can be enhanced later
+    # Detect current shell
+    CURRENT_SHELL=$(basename "$SHELL")
     
-    echo "✅ Completion directory created at $COMPLETION_DIR"
-    echo "   Note: Shell completions will be available in future versions"
+    echo "📥 Generating shell completions..."
     
-    # Set completion availability flag for later use
-    COMPLETIONS_AVAILABLE=0
+    # Only generate completions for the current shell
+    case "$CURRENT_SHELL" in
+        bash)
+            echo "Generating Bash completions..."
+            "${INSTALL_DIR}/recmev-backend" completions bash -o "$COMPLETION_DIR" && BASH_OK=1 || \
+                echo "⚠️  Bash completion generation failed."
+            
+            if [ -f "$COMPLETION_DIR/recmev-backend.bash" ]; then
+                chmod 644 "$COMPLETION_DIR/recmev-backend.bash"
+                echo "✅ Bash completions generated successfully."
+                COMPLETIONS_AVAILABLE=1
+            else
+                echo "⚠️  Failed to generate Bash completions."
+                COMPLETIONS_AVAILABLE=0
+            fi
+            ;;
+        zsh)
+            echo "Generating Zsh completions..."
+            "${INSTALL_DIR}/recmev-backend" completions zsh -o "$COMPLETION_DIR" && ZSH_OK=1 || \
+                echo "⚠️  Zsh completion generation failed."
+            
+            if [ -f "$COMPLETION_DIR/_recmev-backend" ]; then
+                chmod 644 "$COMPLETION_DIR/_recmev-backend"
+                echo "✅ Zsh completions generated successfully."
+                COMPLETIONS_AVAILABLE=1
+            else
+                echo "⚠️  Failed to generate Zsh completions."
+                COMPLETIONS_AVAILABLE=0
+            fi
+            ;;
+        fish)
+            echo "Generating Fish completions..."
+            "${INSTALL_DIR}/recmev-backend" completions fish -o "$COMPLETION_DIR" && FISH_OK=1 || \
+                echo "⚠️  Fish completion generation failed."
+            
+            if [ -f "$COMPLETION_DIR/recmev-backend.fish" ]; then
+                chmod 644 "$COMPLETION_DIR/recmev-backend.fish"
+                echo "✅ Fish completions generated successfully."
+                COMPLETIONS_AVAILABLE=1
+            else
+                echo "⚠️  Failed to generate Fish completions."
+                COMPLETIONS_AVAILABLE=0
+            fi
+            ;;
+        *)
+            # For unknown shells, generate all completion types for user to manually set up
+            echo "Generating Bash completions..."
+            "${INSTALL_DIR}/recmev-backend" completions bash -o "$COMPLETION_DIR" && BASH_OK=1 || true
+            
+            echo "Generating Zsh completions..."
+            "${INSTALL_DIR}/recmev-backend" completions zsh -o "$COMPLETION_DIR" && ZSH_OK=1 || true
+            
+            echo "Generating Fish completions..."
+            "${INSTALL_DIR}/recmev-backend" completions fish -o "$COMPLETION_DIR" && FISH_OK=1 || true
+            
+            # Check if any completions were generated successfully
+            if [ -f "$COMPLETION_DIR/recmev-backend.bash" ] || [ -f "$COMPLETION_DIR/_recmev-backend" ] || [ -f "$COMPLETION_DIR/recmev-backend.fish" ]; then
+                echo "✅ Shell completions generated successfully."
+                COMPLETIONS_AVAILABLE=1
+                chmod 644 "$COMPLETION_DIR"/* 2>/dev/null || true
+            else
+                echo "⚠️  No shell completions were generated successfully."
+                COMPLETIONS_AVAILABLE=0
+            fi
+            ;;
+    esac
+    
+    # Special note for macOS users
+    if [ "$IS_MACOS" = "1" ]; then
+        echo ""
+        echo "ℹ️  Note for macOS users:"
+        echo "  If tab completions don't work after installation,"
+        echo "  run this command to fix it:"
+        echo "    recmev-backend completions"
+        echo ""
+    fi
+    
+    # Provide guidance if completions weren't successful
+    if [ "$COMPLETIONS_AVAILABLE" != "1" ]; then
+        echo "Troubleshooting:"
+        echo "  - After installation completes, run: recmev-backend completions"
+        echo "  - This will automatically set up completions for your current shell"
+    fi
 }
 
 # Function to setup shell completions in user profile
 setup_shell_integration() {
-    # Skip shell integration since completions are not available yet
-    echo "🔧 Shell integration setup..."
-    echo "   Shell completions will be available in future versions of recMEV Backend"
-    echo "   For now, use 'recmev-backend --help' to see available commands"
+    if [ "$COMPLETIONS_AVAILABLE" != "1" ]; then
+        return
+    fi
     
+    CURRENT_SHELL=$(basename "$SHELL")
+    COMPLETION_DIR="$HOME/.recmev-backend/completion"
     SHELL_CONFIGURED=0
+    
+    # Detect macOS for platform-specific handling
+    OS="$(uname -s)"
+    IS_MACOS=0
+    if [ "$OS" = "Darwin" ]; then
+        IS_MACOS=1
+    fi
+    
+    echo "🔧 Setting up shell integration for $CURRENT_SHELL..."
+    
+    case "$CURRENT_SHELL" in
+        bash)
+            if [ "$BASH_OK" = "1" ]; then
+                # On macOS, check both .bashrc and .bash_profile
+                if [ "$IS_MACOS" = "1" ]; then
+                    # First try .bash_profile which is more common on macOS
+                    if [ -f "$HOME/.bash_profile" ]; then
+                        if ! grep -q "recmev-backend completion" "$HOME/.bash_profile"; then
+                            echo "" >> "$HOME/.bash_profile"
+                            echo "# recmev-backend completion" >> "$HOME/.bash_profile"
+                            echo "[ -f $COMPLETION_DIR/recmev-backend.bash ] && source $COMPLETION_DIR/recmev-backend.bash" >> "$HOME/.bash_profile"
+                            echo "✅ Added Bash completion to ~/.bash_profile"
+                            SHELL_CONFIGURED=1
+                        else
+                            echo "✅ Bash completion already configured in ~/.bash_profile"
+                            SHELL_CONFIGURED=1
+                        fi
+                        
+                        # Check if bash-completion is configured in .bash_profile
+                        if ! grep -q "bash[-_]completion" "$HOME/.bash_profile"; then
+                            echo "" >> "$HOME/.bash_profile"
+                            echo "# Enable bash completion system if available (macOS)" >> "$HOME/.bash_profile"
+                            echo "[ -r \"/usr/local/etc/profile.d/bash_completion.sh\" ] && . \"/usr/local/etc/profile.d/bash_completion.sh\"" >> "$HOME/.bash_profile"
+                            echo "[ -r \"/opt/homebrew/etc/profile.d/bash_completion.sh\" ] && . \"/opt/homebrew/etc/profile.d/bash_completion.sh\"" >> "$HOME/.bash_profile"
+                            echo "[ -r \"/usr/local/etc/bash_completion\" ] && . \"/usr/local/etc/bash_completion\"" >> "$HOME/.bash_profile"
+                            echo "✅ Added bash-completion configuration to ~/.bash_profile (macOS)"
+                        fi
+                    elif [ -f "$HOME/.bashrc" ]; then
+                        # Fall back to .bashrc if .bash_profile doesn't exist
+                        if ! grep -q "recmev-backend completion" "$HOME/.bashrc"; then
+                            echo "" >> "$HOME/.bashrc"
+                            echo "# recmev-backend completion" >> "$HOME/.bashrc"
+                            echo "[ -f $COMPLETION_DIR/recmev-backend.bash ] && source $COMPLETION_DIR/recmev-backend.bash" >> "$HOME/.bashrc"
+                            echo "✅ Added Bash completion to ~/.bashrc"
+                            SHELL_CONFIGURED=1
+                        else
+                            echo "✅ Bash completion already configured in ~/.bashrc"
+                            SHELL_CONFIGURED=1
+                        fi
+                        
+                        # Check if bash-completion is configured in .bashrc
+                        if ! grep -q "bash[-_]completion" "$HOME/.bashrc"; then
+                            echo "" >> "$HOME/.bashrc"
+                            echo "# Enable bash completion system if available (macOS)" >> "$HOME/.bashrc"
+                            echo "[ -r \"/usr/local/etc/profile.d/bash_completion.sh\" ] && . \"/usr/local/etc/profile.d/bash_completion.sh\"" >> "$HOME/.bashrc"
+                            echo "[ -r \"/opt/homebrew/etc/profile.d/bash_completion.sh\" ] && . \"/opt/homebrew/etc/profile.d/bash_completion.sh\"" >> "$HOME/.bashrc"
+                            echo "[ -r \"/usr/local/etc/bash_completion\" ] && . \"/usr/local/etc/bash_completion\"" >> "$HOME/.bashrc"
+                            echo "✅ Added bash-completion configuration to ~/.bashrc (macOS)"
+                        fi
+                    else
+                        # Create .bash_profile if neither exists
+                        echo "# recmev-backend completion" > "$HOME/.bash_profile"
+                        echo "[ -f $COMPLETION_DIR/recmev-backend.bash ] && source $COMPLETION_DIR/recmev-backend.bash" >> "$HOME/.bash_profile"
+                        echo "" >> "$HOME/.bash_profile"
+                        echo "# Enable bash completion system if available (macOS)" >> "$HOME/.bash_profile"
+                        echo "[ -r \"/usr/local/etc/profile.d/bash_completion.sh\" ] && . \"/usr/local/etc/profile.d/bash_completion.sh\"" >> "$HOME/.bash_profile"
+                        echo "[ -r \"/opt/homebrew/etc/profile.d/bash_completion.sh\" ] && . \"/opt/homebrew/etc/profile.d/bash_completion.sh\"" >> "$HOME/.bash_profile"
+                        echo "[ -r \"/usr/local/etc/bash_completion\" ] && . \"/usr/local/etc/bash_completion\"" >> "$HOME/.bash_profile"
+                        echo "✅ Created ~/.bash_profile with Bash completion configuration"
+                        SHELL_CONFIGURED=1
+                    fi
+                else
+                    # On Linux, use .bashrc
+                    if [ -f "$HOME/.bashrc" ]; then
+                        if ! grep -q "recmev-backend completion" "$HOME/.bashrc"; then
+                            echo "" >> "$HOME/.bashrc"
+                            echo "# recmev-backend completion" >> "$HOME/.bashrc"
+                            echo "[ -f $COMPLETION_DIR/recmev-backend.bash ] && source $COMPLETION_DIR/recmev-backend.bash" >> "$HOME/.bashrc"
+                            echo "✅ Added Bash completion to ~/.bashrc"
+                            SHELL_CONFIGURED=1
+                        else
+                            echo "✅ Bash completion already configured in ~/.bashrc"
+                            SHELL_CONFIGURED=1
+                        fi
+                    else
+                        # Create .bashrc if it doesn't exist
+                        echo "# recmev-backend completion" > "$HOME/.bashrc"
+                        echo "[ -f $COMPLETION_DIR/recmev-backend.bash ] && source $COMPLETION_DIR/recmev-backend.bash" >> "$HOME/.bashrc"
+                        echo "✅ Created ~/.bashrc with Bash completion"
+                        SHELL_CONFIGURED=1
+                    fi
+                fi
+
+                # Check if bash-completion is installed on macOS
+                if [ "$IS_MACOS" = "1" ]; then
+                    # Check if Homebrew is installed
+                    if command -v brew >/dev/null 2>&1; then
+                        if ! brew list bash-completion >/dev/null 2>&1 && ! brew list bash-completion@2 >/dev/null 2>&1; then
+                            echo ""
+                            echo "ℹ️  Important: For bash completions to work on macOS, install bash-completion:"
+                            echo "   brew install bash-completion"
+                            echo ""
+                            echo "   After installing, restart your terminal or run:"
+                            if [ -f "$HOME/.bash_profile" ]; then
+                                echo "   source ~/.bash_profile"
+                            else
+                                echo "   source ~/.bashrc"
+                            fi
+                        elif brew list bash-completion@2 >/dev/null 2>&1; then
+                            echo "✅ bash-completion@2 is already installed via Homebrew"
+                        else
+                            echo "✅ bash-completion is already installed via Homebrew"
+                        fi
+                    else
+                        echo ""
+                        echo "ℹ️  Note: For full bash completion support on macOS:"
+                        echo "   1. Install Homebrew from https://brew.sh"
+                        echo "   2. Install bash-completion: brew install bash-completion"
+                        echo ""
+                    fi
+                fi
+            elif [ "$BASH_OK" != "1" ]; then
+                echo "⚠️  Bash completion file not available"
+            fi
+            ;;
+        zsh)
+            if [ "$ZSH_OK" = "1" ]; then
+                # Create zsh completions directory if it doesn't exist
+                mkdir -p "$HOME/.zsh/completion"
+                
+                # Symlink the completion file
+                if [ -f "$COMPLETION_DIR/_recmev-backend" ]; then
+                    ln -sf "$COMPLETION_DIR/_recmev-backend" "$HOME/.zsh/completion/_recmev-backend"
+                    
+                    # Check if fpath includes our directory
+                    if [ -f "$HOME/.zshrc" ]; then
+                        if ! grep -q "recmev-backend completion" "$HOME/.zshrc"; then
+                            echo "" >> "$HOME/.zshrc"
+                            echo "# recmev-backend completion" >> "$HOME/.zshrc"
+                            echo "fpath=($HOME/.zsh/completion \$fpath)" >> "$HOME/.zshrc"
+                            echo "autoload -U compinit && compinit" >> "$HOME/.zshrc"
+                            echo "✅ Added Zsh completion to ~/.zshrc"
+                            SHELL_CONFIGURED=1
+                        else
+                            echo "✅ Zsh completion already configured in ~/.zshrc"
+                            SHELL_CONFIGURED=1
+                        fi
+                    else
+                        # Create .zshrc if it doesn't exist
+                        echo "# recmev-backend completion" > "$HOME/.zshrc"
+                        echo "fpath=($HOME/.zsh/completion \$fpath)" >> "$HOME/.zshrc"
+                        echo "autoload -U compinit && compinit" >> "$HOME/.zshrc"
+                        echo "✅ Created ~/.zshrc with Zsh completion"
+                        SHELL_CONFIGURED=1
+                    fi
+                fi
+            elif [ "$ZSH_OK" != "1" ]; then
+                echo "⚠️  Zsh completion file not available"
+            fi
+            ;;
+        fish)
+            if [ "$FISH_OK" = "1" ]; then
+                # Create fish completions directory in .recmev-backend instead of .config/fish
+                mkdir -p "$HOME/.recmev-backend/fish/completions"
+                
+                # Symlink the completion file to .recmev-backend/fish/completions instead of .config/fish/completions
+                if [ -f "$COMPLETION_DIR/recmev-backend.fish" ]; then
+                    cp "$COMPLETION_DIR/recmev-backend.fish" "$HOME/.recmev-backend/fish/completions/recmev-backend.fish"
+                    chmod 644 "$HOME/.recmev-backend/fish/completions/recmev-backend.fish"
+                    
+                    # We still need to create a symlink in the standard location for fish to find the completions
+                    mkdir -p "$HOME/.config/fish/completions"
+                    ln -sf "$HOME/.recmev-backend/fish/completions/recmev-backend.fish" "$HOME/.config/fish/completions/recmev-backend.fish"
+                    
+                    echo "✅ Added Fish completion to ~/.recmev-backend/fish/completions/ (symlinked to ~/.config/fish/completions/)"
+                    SHELL_CONFIGURED=1
+                fi
+            elif [ "$FISH_OK" != "1" ]; then
+                echo "⚠️  Fish completion file not available"
+            fi
+            ;;
+        *)
+            echo "⚠️  Unknown shell: $CURRENT_SHELL"
+            echo "    Automatic completion setup not available for your shell."
+            echo "    See manual instructions below."
+            ;;
+    esac
+    
+    if [ "$SHELL_CONFIGURED" = "1" ]; then
+        echo "🎉 Shell completions have been configured for $CURRENT_SHELL"
+        
+        # macOS-specific activation instructions
+        if [ "$IS_MACOS" = "1" ]; then
+            case "$CURRENT_SHELL" in
+                bash)
+                    if [ -f "$HOME/.bash_profile" ]; then
+                        echo "   Please restart your terminal or run 'source ~/.bash_profile' to activate completions"
+                    else
+                        echo "   Please restart your terminal or run 'source ~/.bashrc' to activate completions"
+                    fi
+                    ;;
+                *)
+                    echo "   Please restart your terminal or run 'source ~/.${CURRENT_SHELL}rc' to activate completions"
+                    ;;
+            esac
+        else
+            echo "   Please restart your terminal or run 'source ~/.${CURRENT_SHELL}rc' to activate completions"
+        fi
+    fi
 }
 
 # Function to download and install binary
@@ -163,7 +458,7 @@ create_default_config() {
     if [ ! -f "$CONFIG_FILE" ]; then
         cat > "$CONFIG_FILE" << 'EOF'
 [version_info]
-version = "0.1.6"
+version = "0.1.9"
 build_timestamp = "Generated by installer"
 
 [directories]
@@ -226,10 +521,91 @@ verify_installation() {
     fi
 }
 
+# Function to display the installation completion banner
+display_banner() {
+    cat << "EOF"
+    ██████  ███████  ██████ ███    ███ ███████ ██    ██
+    ██   ██ ██      ██      ████  ████ ██      ██    ██
+    ██████  █████   ██      ██ ████ ██ █████   ██    ██
+    ██   ██ ██      ██      ██  ██  ██ ██       ██  ██ 
+    ██   ██ ███████  ██████ ██      ██ ███████   ████  
+                                                      
+         Backend - Pool Discovery & Sync Engine
+                Built by RECTOR with ❤️
+EOF
+}
+
+# Function to print completion setup instructions
+print_completion_instructions() {
+    if [ "$COMPLETIONS_AVAILABLE" != "1" ]; then
+        echo "🔍 Shell completion files not available."
+        return
+    fi
+    
+    # Detect macOS for platform-specific instructions
+    OS="$(uname -s)"
+    IS_MACOS=0
+    if [ "$OS" = "Darwin" ]; then
+        IS_MACOS=1
+    fi
+    
+    echo "🔍 Shell completion setup:"
+    echo ""
+    echo "  Completion files have been installed to: $HOME/.recmev-backend/completion"
+    echo ""
+    
+    if [ "$SHELL_CONFIGURED" = "1" ]; then
+        echo "  ✅ Your shell has been automatically configured for completions."
+        echo "  To activate them now, run:"
+        
+        case "$(basename "$SHELL")" in
+            bash)
+                if [ "$IS_MACOS" = "1" ] && [ -f "$HOME/.bash_profile" ]; then
+                    echo "    source ~/.bash_profile"
+                else
+                    echo "    source ~/.bashrc"
+                fi
+                ;;
+            zsh)
+                echo "    source ~/.zshrc"
+                ;;
+            fish)
+                echo "    source ~/.config/fish/config.fish"
+                ;;
+        esac
+        
+        echo ""
+        echo "  Or simply restart your terminal."
+    else
+        echo "  Completions need manual setup. Run this to auto-configure:"
+        echo "    recmev-backend completions"
+        echo ""
+    fi
+    
+    echo "  To test if completions are working:"
+    echo "    1. Type 'recmev-backend' and press Tab twice"
+    echo "    2. Type 'recmev-backend sync --' and press Tab"
+    echo ""
+    
+    echo "  Troubleshooting tips:"
+    if [ "$IS_MACOS" = "1" ]; then
+        echo "  • For Bash on macOS: brew install bash-completion"
+    else
+        echo "  • For Bash on Linux:"
+        echo "    sudo apt install bash-completion  # Ubuntu/Debian"
+        echo "    sudo dnf install bash-completion  # Fedora/RHEL"
+        echo "    sudo pacman -S bash-completion    # Arch Linux"
+    fi
+    echo "  • For all shells: recmev-backend completions"
+    echo "  • More help: https://github.com/RECTOR-LABS/recMEV-backend"
+}
+
 # Function to display post-installation instructions
 show_post_install_instructions() {
     echo ""
-    echo "🎉 recMEV Backend installation completed successfully!"
+    display_banner
+    echo ""
+    echo "✨ Installation successful! recMEV Backend ${VERSION} is ready."
     echo ""
     echo "📋 Next Steps:"
     echo "=============="
@@ -253,8 +629,25 @@ show_post_install_instructions() {
     echo "   • Troubleshooting: https://github.com/RECTOR-LABS/recMEV-backend/issues"
     echo ""
     echo "🔧 Shell Completions:"
-    echo "   Shell completions will be available in future versions"
-    echo "   For now, use 'recmev-backend --help' to see available commands"
+    if [ "$COMPLETIONS_AVAILABLE" = "1" ]; then
+        echo "   ✅ Shell completions have been configured for your current shell"
+        echo "   To test: type 'recmev-backend ' and press Tab twice"
+        echo "   If completions don't work, run: recmev-backend completions"
+    else
+        echo "   ⚠️  Completions setup failed during installation"
+        echo "   Run this command to set them up manually: recmev-backend completions"
+    fi
+    echo ""
+    echo "Getting started:"
+    echo "  recmev-backend --help      # See available commands"
+    echo "  recmev-backend test        # Test configuration"
+    
+    # Simplified OS-specific notes
+    if [ "$(uname -s)" = "Darwin" ]; then
+        echo "  recmev-backend completions  # Fix tab completions on macOS"
+    else
+        echo "  recmev-backend sync --dry-run  # Test sync operation"
+    fi
     echo ""
     echo "Happy syncing! 🚀"
 }
@@ -268,11 +661,11 @@ main() {
     # Check platform
     check_platform
     
+    # Ensure installation directory exists (must be before confirm_installation)
+    ensure_install_dir
+    
     # Confirm installation
     confirm_installation
-    
-    # Ensure installation directory exists
-    ensure_install_dir
     
     # Download and install binary
     install_binary
@@ -291,6 +684,10 @@ main() {
     
     # Show post-installation instructions
     show_post_install_instructions
+    
+    # Print shell completion setup instructions
+    echo ""
+    print_completion_instructions
 }
 
 # Run main function

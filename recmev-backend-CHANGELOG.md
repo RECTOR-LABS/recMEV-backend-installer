@@ -1,11 +1,60 @@
 # Changelog
 
-All notable changes to the recMEV Backend installer will be documented in this file.
+## [0.1.9]
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### Enhanced
 
-## [0.1.6] - 2025-01-27
+- **Help System**: Comprehensive help documentation improvements across all commands
+  - **Export Help**: Added detailed troubleshooting section with common issues and solutions
+    - Export failure diagnostics and permission checks
+    - Disk space and data availability validation
+    - File creation and directory permission guidance
+  - **Logs Help**: Complete overhaul with comprehensive logging documentation
+    - Added log sources section covering application events, database operations, API interactions
+    - Detailed log viewing process with filtering and real-time monitoring
+    - Log levels explanation with color coding (ERROR, WARN, INFO, DEBUG, TRACE)
+    - Real-time monitoring features and graceful exit instructions
+    - Log locations for different operating systems
+    - Expanded examples with use cases and troubleshooting
+  - **Stats Help**: Enhanced pool statistics documentation
+    - Added statistics types section with DEX-specific metrics
+    - Data sources explanation covering database tables
+    - Display format and information provided sections
+    - Sample output examples and use cases
+    - Comprehensive troubleshooting for database connectivity issues
+  - **Sync Help**: Major documentation expansion for pool synchronization
+    - Added data sources section covering all supported DEX protocols
+    - Detailed synchronization process with 7-step workflow
+    - Safety features including dry-run mode and batch processing
+    - Performance considerations with optimization guidelines
+    - Expanded examples and troubleshooting section
+  - **System Stats Help**: Complete system monitoring documentation
+    - Added system components monitoring (database, cache, data store, directories)
+    - Monitoring areas with performance metrics and operational insights
+    - Information categories with detailed breakdowns
+    - Sample output sections and use cases
+    - Comprehensive troubleshooting for system health issues
+  - **Test Help**: Enhanced connection testing documentation
+    - Added connection types section covering all API endpoints
+    - Detailed testing process with validation checks
+    - Test modes explanation (full test, Supabase only, APIs only)
+    - Expected results and troubleshooting guidance
+  - **Tokens Help**: Comprehensive token metadata documentation
+    - Added token sync process with 7-step workflow
+    - Data sources explanation covering Jupiter API integration
+    - Cache management with TTL and persistence features
+    - Database integration with bulk operations
+    - Performance features and token statistics reporting
+    - Cache locations and comprehensive troubleshooting
+
+### Improved
+
+- **Documentation Quality**: All help commands now provide comprehensive, user-friendly documentation
+- **User Experience**: Enhanced help formatting with consistent structure and color coding
+- **Troubleshooting**: Added detailed troubleshooting sections for all major commands
+- **Examples**: Expanded examples with real-world use cases and scenarios
+
+## [0.1.6]
 
 ### Added
 
@@ -109,60 +158,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Secure download from official GitHub repository
 - Proper file permissions setup
 - Safe temporary file handling
-
----
-
-## Version History
-
-### Planned Releases
-
-#### [0.1.7] - Planned
-
-- Enhanced error messages and troubleshooting
-- Support for additional shell environments
-- Improved binary verification with checksums
-- Automatic update checking functionality
-
-#### [0.2.0] - Planned
-
-- Support for Windows installation
-- GUI installer option
-- Configuration wizard for first-time setup
-- Integration with package managers (Homebrew, apt, etc.)
-
----
-
-## Installation Methods
-
-### Current (v0.1.6)
-
-```bash
-# One-line installation
-sh -c "$(curl -sSfL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/install.sh)"
-
-# Direct script execution
-./install.sh
-
-# Manual installation
-curl -fsSL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/recmev-backend-v0.1.6-linux -o recmev-backend
-chmod +x recmev-backend
-sudo mv recmev-backend /usr/local/bin/recmev-backend
-```
-
-### Version-specific Installation
-
-```bash
-# Install specific version
-sh -c "$(curl -sSfL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/v0.1.6/install.sh)"
-```
-
----
-
-## Support
-
-For issues, questions, or feature requests:
-
-- **Repository**: [recMEV Backend Installer](https://github.com/RECTOR-LABS/recMEV-backend-installer)
-- **Main Project**: [recMEV Backend](https://github.com/RECTOR-LABS/recMEV-backend)
-- **Issues**: [GitHub Issues](https://github.com/RECTOR-LABS/recMEV-backend-installer/issues)
-- **Contact**: labs@rectorspace.com
