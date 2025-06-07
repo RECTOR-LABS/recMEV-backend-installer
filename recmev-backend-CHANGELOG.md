@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.10]
+
+### Enhanced
+
+- **Pre-release Process**: Automated pre-release workflow implementation
+- **Documentation**: Updated pre-release instructions and automation
+- **Version Management**: Improved version tracking and release coordination
+
+### Improved
+
+- **Release Process**: Streamlined pre-release automation across repositories
+- **Documentation Quality**: Enhanced pre-release documentation and procedures
+
 ## [0.1.9]
 
 ### Enhanced
