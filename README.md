@@ -13,8 +13,8 @@ The installer places the binary in the system binary directory (`/usr/local/bin`
 
 ## Components
 
-- `recmev-backend-v0.1.10-mac`: macOS binary
-- `recmev-backend-v0.1.10-linux`: Linux binary
+- `recmev-backend-v0.1.11-mac`: macOS binary
+- `recmev-backend-v0.1.11-linux`: Linux binary
 - `install.sh`: Installation script with platform detection
 
 ## What is recMEV Backend?
@@ -62,7 +62,7 @@ For users who prefer to perform the installation steps manually:
 mkdir -p ~/.recmev-backend
 
 # Download binary (replace OS with either 'linux' or 'mac' based on your system)
-curl -fsSL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/recmev-backend-v0.1.10-OS -o recmev-backend
+curl -fsSL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/recmev-backend-v0.1.11-OS -o recmev-backend
 
 # Install binary
 chmod +x recmev-backend
@@ -79,7 +79,8 @@ sh -c "$(curl -sSfL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend
 
 Available versions:
 
-- v0.1.10 (latest) - Automated pre-release workflow implementation with enhanced documentation and version management
+- v0.1.11 (latest) - Fixed bash completion issue for hyphenated command names with proper tab completion on Linux systems
+- v0.1.10 - Automated pre-release workflow implementation with enhanced documentation and version management
 - v0.1.9 - Comprehensive help documentation improvements with detailed troubleshooting guides and enhanced user experience
 - v0.1.6 - Enhanced help system, advanced logging, progress tracking, DEX filtering, and Jupiter token integration
 - v0.1.5 - Multi-DEX pool discovery with Raydium, Orca, and Meteora support

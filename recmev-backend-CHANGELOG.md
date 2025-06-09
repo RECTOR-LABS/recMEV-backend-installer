@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.11]
+
+### Fixed
+
+- **Bash Completion**: Fixed bash completion issue for hyphenated command names
+  - Added post-processing function to fix clap-generated completion
+  - Replaced problematic double underscores with single underscores
+  - Ensured function naming consistency for proper bash completion
+  - Resolved tab completion issues on Linux systems
+
 ## [0.1.10]
 
 ### Enhanced
