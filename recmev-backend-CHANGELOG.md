@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.1.12]
+
+### Enhanced
+
+- **Build System**: Improved cross-compilation and development workflow
+  - Added Cross.toml configuration for cross-platform builds
+  - Enhanced Makefile with platform detection and native/cross-compilation support
+  - Added development build targets (`dev` and `dev-run`) for faster iteration
+  - Improved Linux binary building using cross-compilation tools
+  - Enhanced macOS binary building with native compilation on Darwin systems
+
+### Added
+
+- **Cross-compilation Configuration**: New Cross.toml file for consistent cross-platform builds
+  - Linux target configuration with proper Docker image
+  - macOS target configuration for cross-compilation from Linux
+  - Environment variable passthrough for debugging (RUST_LOG, RUST_BACKTRACE)
+
+### Improved
+
+- **Development Experience**: Enhanced Makefile with development-focused targets
+  - Platform detection for optimal build strategy selection
+  - Separate development and production build workflows
+  - Argument passing support for development runs
+  - Better build output and status reporting
+
 ## [0.1.11]
 
 ### Fixed
