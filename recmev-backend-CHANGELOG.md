@@ -1,5 +1,74 @@
 # Changelog
 
+## [0.1.13]
+
+### Enhanced
+
+- **Help System**: Modernized help interface with improved formatting and user experience
+
+  - Streamlined help output with cleaner, more readable format
+  - Improved command descriptions and option formatting
+  - Better visual hierarchy with consistent color coding
+  - Enhanced usage examples and command structure display
+
+- **Database Schema Management**: Added automatic database schema creation and validation
+
+  - Automatic detection and creation of required database tables
+  - Enhanced connection testing with schema validation
+  - Comprehensive error handling for missing database structures
+  - Manual setup instructions for self-hosted Supabase instances
+  - Added database indexes and triggers for optimal performance
+
+- **Token Management**: Generalized token metadata handling
+  - Removed Jupiter-specific branding from token operations
+  - Unified token metadata fetching and caching system
+  - Improved token synchronization process documentation
+  - Enhanced token cache management with better error handling
+
+### Added
+
+- **Automatic Schema Creation**: New database schema management system
+  - Creates pools and token_mints tables automatically
+  - Adds performance indexes for optimal query performance
+  - Implements automatic timestamp update triggers
+  - Provides fallback manual setup instructions
+  - Supports both hosted and self-hosted Supabase instances
+
+### Improved
+
+- **User Experience**: Enhanced help system with modern formatting
+
+  - Cleaner command structure display
+  - Better option descriptions and formatting
+  - Improved visual hierarchy and readability
+  - More intuitive help navigation
+
+- **Database Operations**: Robust database initialization and management
+
+  - Automatic table creation on first run
+  - Enhanced connection testing with schema validation
+  - Better error messages for database setup issues
+  - Comprehensive fallback procedures for manual setup
+
+- **Documentation**: Updated all help text and command descriptions
+  - Removed platform-specific references where appropriate
+  - Improved clarity and consistency across all commands
+  - Enhanced troubleshooting information
+
+### Technical
+
+- **Schema Management**: Comprehensive database schema creation system
+
+  - SQL schema definition with proper table structures
+  - Index creation for optimal query performance
+  - Trigger implementation for automatic timestamp updates
+  - Error handling for various database setup scenarios
+
+- **API Integration**: Improved token metadata handling
+  - Generalized token API integration (removed Jupiter-specific references)
+  - Enhanced error handling for token synchronization
+  - Better cache management and persistence
+
 ## [0.1.12]
 
 ### Enhanced
