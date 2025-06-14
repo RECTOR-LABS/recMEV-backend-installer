@@ -1,5 +1,103 @@
 # Changelog
 
+## [0.1.15]
+
+### Enhanced
+
+- **Raydium Pool Support**: Comprehensive Raydium pool type integration
+
+  - Added support for Raydium CLMM (Concentrated Liquidity Market Maker) pools
+  - Enhanced pool type tracking with separate AMM V4 and CLMM statistics
+  - Improved pool discovery with dual API endpoint integration
+  - Added CLMM-specific fields: tick_spacing, protocol_fee_rate, fund_fee_rate
+
+- **Pool Type Architecture**: Advanced pool type management system
+
+  - Introduced PoolType enum for distinguishing pool implementations
+  - Enhanced statistics tracking with type-specific counters
+  - Improved pool filtering and categorization
+  - Better pool type identification and validation
+
+- **Token Management**: Streamlined token operations
+  - Simplified token command with direct Jupiter API integration
+  - Removed dependency on PoolSyncManager for token operations
+  - Enhanced token fetching with dedicated HTTP client
+  - Improved error handling and timeout management
+
+### Added
+
+- **CLMM Pool Support**: New Raydium CLMM API integration
+
+  - ClmmResponse, ClmmPool, and related data structures
+  - CLMM-specific configuration fields in ApiConfig
+  - Tick spacing and fee rate tracking for CLMM pools
+  - Comprehensive CLMM pool data parsing and validation
+
+- **Pool Type System**: Enhanced pool categorization
+
+  - PoolType enum with RaydiumAmmV4, RaydiumClmm, RaydiumCpmm, Orca, Meteora
+  - Type-specific pool creation methods
+  - DEX name and type identifier methods
+  - Pool type-aware statistics aggregation
+
+- **Discovery Summary**: Enhanced pool discovery reporting
+  - DiscoverySummary structure for original vs filtered statistics
+  - Filter percentage calculations and reporting
+  - Comprehensive discovery metrics with type breakdown
+  - Improved pool discovery logging and analytics
+
+### Improved
+
+- **Statistics Reporting**: Enhanced pool statistics with type breakdown
+
+  - Separate tracking for Raydium AMM V4 and CLMM pools
+  - Total Raydium pools calculation across all types
+  - Type-specific pool counting and aggregation
+  - Improved statistics display with detailed breakdowns
+
+- **API Integration**: Enhanced Raydium API handling
+
+  - Dual API endpoint support (V2 AMM and CLMM)
+  - Improved error handling for multiple API calls
+  - Better API response parsing and validation
+  - Enhanced timeout and retry logic
+
+- **Pool Synchronization**: Streamlined sync process
+  - Removed token cache dependency from pool sync
+  - Simplified pool enrichment workflow
+  - Enhanced pool filtering and deduplication
+  - Improved sync performance and reliability
+
+### Technical
+
+- **Data Models**: Enhanced pool data structures
+
+  - Added optional CLMM-specific fields to PoolInfo
+  - Improved pool type tracking and validation
+  - Enhanced pool creation methods with type support
+  - Better data model flexibility and extensibility
+
+- **Configuration**: Enhanced API configuration
+
+  - Added raydium_clmm endpoint configuration
+  - Prepared raydium_cpmm endpoint for future use
+  - Improved API endpoint management
+  - Better configuration validation and defaults
+
+- **Performance**: Optimized pool discovery and processing
+  - Reduced memory usage by removing token cache from sync
+  - Improved API call efficiency with proper delays
+  - Enhanced pool processing with type-aware operations
+  - Better resource management and cleanup
+
+### Removed
+
+- **Cache Dependencies**: Simplified architecture
+  - Removed CacheManager dependency from PoolSyncManager
+  - Eliminated token cache loading from pool sync process
+  - Removed token enrichment from pool synchronization
+  - Simplified pool sync workflow and dependencies
+
 ## [0.1.13]
 
 ### Enhanced
