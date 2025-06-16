@@ -2,7 +2,7 @@
 set -e
 
 # Define version for download
-VERSION="v0.1.15"
+VERSION="v0.1.21"
 
 # Check if running on supported platform
 check_platform() {

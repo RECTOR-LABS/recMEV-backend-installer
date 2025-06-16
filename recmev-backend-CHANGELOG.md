@@ -1,5 +1,75 @@
 # Changelog
 
+## [0.1.21]
+
+### Enhanced
+
+- **Supabase Client Architecture**: Major refactoring into modular structure for improved maintainability
+
+  - Split monolithic `supabase_client.rs` into separate client and token modules
+  - Created dedicated `client/` directory with specialized modules
+  - Introduced `client/mod.rs` for module organization and exports
+  - Added `client/token.rs` for token-specific operations and batch processing
+
+- **Token Operations**: Enhanced token management with dedicated module
+
+  - Comprehensive token batch upsert functionality with progress tracking
+  - Enhanced error handling and validation for token operations
+  - Improved progress bars with ETA calculations for token processing
+  - Better batch processing with configurable batch sizes and delays
+
+- **Code Organization**: Improved codebase structure and maintainability
+  - Modular architecture for better separation of concerns
+  - Enhanced documentation with detailed module descriptions
+  - Improved code reusability and testability
+  - Better dependency management and imports
+
+### Added
+
+- **Token Module**: New dedicated token operations module
+
+  - `client/token.rs` with comprehensive token CRUD operations
+  - Batch upsert functionality with progress tracking and ETA calculations
+  - Dry-run mode support for token operations testing
+  - Enhanced error handling and logging for token processing
+
+- **Client Module Structure**: Organized client architecture
+
+  - `client/mod.rs` for module exports and organization
+  - Separated token operations from main client functionality
+  - Improved module documentation and flow descriptions
+  - Better dependency management between modules
+
+### Improved
+
+- **Code Maintainability**: Enhanced codebase organization
+
+  - Reduced file size and complexity of main client module
+  - Better separation of concerns between different operations
+  - Improved code readability and navigation
+  - Enhanced module documentation and inline comments
+
+- **Token Processing**: Enhanced token synchronization capabilities
+  - Better progress tracking with detailed batch information
+  - Improved error handling for failed token operations
+  - Enhanced logging with comprehensive operation details
+  - Better performance metrics and timing information
+
+### Technical
+
+- **Architecture**: Modular client structure implementation
+
+  - Separated token operations into dedicated module
+  - Maintained backward compatibility with existing API
+  - Improved code organization and dependency management
+  - Enhanced module exports and public interface
+
+- **Performance**: Optimized token processing operations
+  - Efficient batch processing with progress tracking
+  - Better memory management for large token datasets
+  - Enhanced error recovery and continuation logic
+  - Improved API call efficiency and timing
+
 ## [0.1.15]
 
 ### Enhanced
