@@ -1,5 +1,101 @@
 # Changelog
 
+## [0.1.25]
+
+### Enhanced
+
+- **Pool Filtering System**: Major enhancement to pool filtering with per-type/subtype support
+
+  - Enhanced Meteora pool filtering to treat each subtype independently (DLMM, DAMM v1, DAMM v2, Launch, Memecoin v1, Memecoin v2, Stake2Earn, Multi-Token Stable)
+  - Enhanced Raydium pool filtering to treat each pool type independently (AMM V4, CLMM, CPMM)
+  - Changed `--max-pools-per-dex` to `--max-pools-per-type` for more granular control
+  - Each pool type/subtype now gets the full allocation instead of sharing limits
+
+- **Raydium CPMM Integration**: Improved CPMM pool discovery with pagination
+
+  - Fixed CPMM pool fetching to properly handle paginated API responses
+  - Enhanced CPMM pool data extraction with program ID filtering
+  - Added comprehensive logging for CPMM discovery across multiple pages
+  - Implemented safety checks to prevent infinite API loops (100 page limit)
+
+- **Resource Monitoring**: New comprehensive resource monitoring system
+
+  - Added ResourceMonitor for tracking CPU, memory, and network usage during sync operations
+  - Detailed performance analysis with peak and average resource usage tracking
+  - Memory trend analysis and CPU spike detection
+  - Resource efficiency scoring and detailed performance reporting
+
+### Added
+
+- **Resource Monitor Module**: New system resource tracking capabilities
+
+  - `utils/resource_monitor.rs` with comprehensive system metrics collection
+  - ResourceSnapshot and ResourceStats structures for detailed monitoring
+  - Real-time resource usage tracking during pool synchronization
+  - Performance efficiency analysis and trend detection
+
+- **Pool Type Statistics**: Enhanced statistics tracking for all pool types
+
+  - Added separate counters for all Meteora subtypes (Memecoin v1/v2, Stake2Earn, Multi-Token Stable, Launch)
+  - Enhanced pool statistics aggregation with comprehensive type breakdown
+  - Improved statistics reporting with detailed per-type filtering results
+  - Better pool type identification and categorization
+
+### Improved
+
+- **Pool Discovery Performance**: Enhanced discovery process with better resource management
+
+  - Added automatic resource monitoring during sync operations
+  - Enhanced progress tracking with detailed performance metrics
+  - Better API call management with improved pagination handling
+  - Enhanced error handling and recovery for large pool datasets
+
+- **Filtering Logic**: More intelligent and flexible pool filtering
+
+  - Independent allocation for each pool type/subtype instead of shared limits
+  - Priority-based sorting by liquidity and volume for each type
+  - Enhanced filtering reports with detailed per-type statistics
+  - Better pool selection algorithm for optimal coverage
+
+- **System Integration**: Enhanced system monitoring and reporting
+
+  - Integrated resource monitoring into pool sync workflow
+  - Comprehensive performance reporting with efficiency scoring
+  - Better system resource utilization tracking
+  - Enhanced logging with resource usage summaries
+
+### Technical
+
+- **Architecture**: Enhanced pool filtering and monitoring architecture
+
+  - Refactored FilterCriteria to use max_pools_per_type instead of max_pools_per_dex
+  - Enhanced PoolFilter with type-specific filtering methods
+  - Added ResourceMonitor integration to PoolSyncManager
+  - Improved pool type handling with comprehensive subtype support
+
+- **Performance**: Optimized resource usage and monitoring
+
+  - Added background resource monitoring with configurable sampling intervals
+  - Enhanced memory and CPU usage tracking for performance optimization
+  - Better API pagination handling to prevent resource exhaustion
+  - Improved pool processing efficiency with type-aware operations
+
+- **Data Models**: Enhanced pool type and statistics tracking
+
+  - Extended PoolType enum with comprehensive Meteora subtype support
+  - Enhanced SyncStats with detailed per-type counters
+  - Improved pool statistics aggregation and reporting
+  - Better pool type identification and validation
+
+### Fixed
+
+- **Raydium CPMM**: Resolved pagination issues in CPMM pool discovery
+
+  - Fixed infinite loop potential in CPMM API pagination
+  - Corrected pool data extraction to properly handle paginated responses
+  - Enhanced error handling for CPMM API calls
+  - Improved CPMM pool counting and statistics tracking
+
 ## [0.1.21]
 
 ### Enhanced

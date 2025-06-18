@@ -13,8 +13,8 @@ The installer places the binary in the system binary directory (`/usr/local/bin`
 
 ## Components
 
-- `recmev-backend-v0.1.21-mac`: macOS binary
-- `recmev-backend-v0.1.21-linux`: Linux binary
+- `recmev-backend-v0.1.25-mac`: macOS binary
+- `recmev-backend-v0.1.25-linux`: Linux binary
 - `install.sh`: Installation script with platform detection
 
 ## What is recMEV Backend?
@@ -62,7 +62,7 @@ For users who prefer to perform the installation steps manually:
 mkdir -p ~/.recmev-backend
 
 # Download binary (replace OS with either 'linux' or 'mac' based on your system)
-curl -fsSL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/recmev-backend-v0.1.21-OS -o recmev-backend
+curl -fsSL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/recmev-backend-v0.1.25-OS -o recmev-backend
 
 # Install binary
 chmod +x recmev-backend
@@ -79,7 +79,8 @@ sh -c "$(curl -sSfL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend
 
 Available versions:
 
-- v0.1.21 (latest) - Modular Supabase client architecture with enhanced token operations and improved code maintainability
+- v0.1.25 (latest) - Enhanced pool filtering system with per-type/subtype allocation, improved Raydium CPMM integration, and comprehensive resource monitoring
+- v0.1.21 - Modular Supabase client architecture with enhanced token operations and improved code maintainability
 - v0.1.15 - Comprehensive Raydium pool type integration with CLMM support, advanced pool type management, and streamlined token operations
 - v0.1.13 - Modern CLI interface, automatic database schema management, and unified token handling
 - v0.1.12 - Improved cross-compilation and development workflow with enhanced build system and platform detection
