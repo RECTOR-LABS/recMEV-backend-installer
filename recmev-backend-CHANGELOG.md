@@ -1,5 +1,115 @@
 # Changelog
 
+## [0.1.29]
+
+### Enhanced
+
+- **Configuration Migration System**: Improved configuration migration with enhanced user feedback
+
+  - Enhanced migration messages to differentiate between upgrades and downgrades
+  - Added contextual error handling with detailed failure messages
+  - Improved user experience with clear success messages for both upgrade and downgrade scenarios
+  - Better preservation of user settings during configuration transitions
+
+- **Pool Type Filtering**: Advanced pool type filtering system for targeted synchronization
+
+  - Added `--pool-type` parameter for filtering specific pool types during sync
+  - Comprehensive pool type support for all DEX implementations (Meteora, Raydium, Orca)
+  - Enhanced filtering logic with type-specific matching and validation
+  - Improved sync efficiency by allowing focused pool type synchronization
+
+- **Pagination Control**: New pagination limits for testing and resource management
+
+  - Added `--max-pages` parameter to limit API pagination for testing scenarios
+  - Implemented pagination controls across all DEX fetchers (Meteora, Raydium, Orca)
+  - Enhanced testing capabilities with controlled data fetching
+  - Better resource management for development and testing environments
+
+- **Meteora Multi-Token Stable Pools**: New support for Meteora multi-token stable pools
+
+  - Added complete API integration for multi-token stable pools via Universal Search API
+  - Enhanced pool type system with MeteoraMultiTokenStable type support
+  - Comprehensive data model with stable pool specific fields (amp_factor, virtual_price)
+  - Improved pool discovery with dedicated fetching and conversion logic
+
+### Added
+
+- **Pool Type Filter System**: Comprehensive pool type filtering capabilities
+
+  - Support for all Meteora pool types: dlmm, damm-v1, damm-v2, damm-v2-launch, memecoin-v1, memecoin-v2, stake2earn, multi-token-stable
+  - Support for all Raydium pool types: amm-v4, clmm, cpmm
+  - Support for Orca pool types: whirlpool, orca
+  - Enhanced help documentation with detailed pool type explanations and examples
+
+- **Multi-Token Stable Pool Support**: Complete implementation for Meteora stable pools
+
+  - New data structures: MeteoraMultiTokenStableResponse, MeteoraMultiTokenStableHit, MeteoraMultiTokenStablePool
+  - Dedicated API fetching with pagination support
+  - Stable pool specific conversion logic with multi-token handling
+  - Enhanced pool statistics and tracking for stable pool types
+
+- **Pagination Management**: Advanced API pagination control system
+
+  - Configurable page limits for all DEX API calls
+  - Testing-focused pagination with controlled data fetching
+  - Resource-aware pagination management
+  - Enhanced logging for pagination status and limits
+
+### Improved
+
+- **Configuration Help Documentation**: Enhanced configuration command documentation
+
+  - Updated help text to reflect automatic configuration generation (deprecated manual --generate)
+  - Added new Meteora API endpoint documentation (DAMM v1, DAMM v2, Multi-Token Stable)
+  - Improved configuration process description with automatic migration details
+  - Better explanation of configuration validation and version compatibility
+
+- **Sync Help Documentation**: Comprehensive sync command documentation updates
+
+  - Added detailed pool type filtering examples and use cases
+  - Enhanced pagination control documentation with practical examples
+  - Improved DEX-specific pool type listings and descriptions
+  - Better sync workflow explanation with filtering and pagination options
+
+- **Memecoin Pool Processing**: Enhanced memecoin pool validation and processing
+
+  - Improved validation logic for memecoin pools with better error handling
+  - Enhanced token mint validation with detailed logging
+  - Better pool type classification for memecoin pools
+  - Improved pool data extraction and conversion reliability
+
+### Technical
+
+- **Data Models**: Enhanced pool type and filtering architecture
+
+  - Extended SyncConfig with pool_type_filter and max_pages parameters
+  - Enhanced FilterCriteria with pool type filtering capabilities
+  - Improved pool type matching logic with comprehensive type support
+  - Better data validation and error handling across all pool types
+
+- **API Integration**: Enhanced DEX API integration with advanced controls
+
+  - Implemented pagination limits across all DEX fetchers
+  - Enhanced API response handling with better error recovery
+  - Improved rate limiting and resource management
+  - Better API endpoint management with configuration flexibility
+
+- **Pool Conversion**: Improved pool data conversion and validation
+
+  - Enhanced conversion logic for multi-token stable pools
+  - Better validation and error handling for all pool types
+  - Improved pool data extraction with comprehensive field mapping
+  - Enhanced pool type identification and classification
+
+### Fixed
+
+- **Configuration Migration**: Resolved configuration migration edge cases
+
+  - Fixed error context handling during configuration save operations
+  - Improved migration success/failure messaging
+  - Better handling of downgrade scenarios with appropriate user feedback
+  - Enhanced error recovery during configuration transitions
+
 ## [0.1.25]
 
 ### Enhanced
