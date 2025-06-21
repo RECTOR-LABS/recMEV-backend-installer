@@ -1,5 +1,126 @@
 # Changelog
 
+## [0.2.0]
+
+### Major Features
+
+- **Hot-Sync System**: New real-time pool activity monitoring and hot pool detection system
+
+  - Added comprehensive hot-sync module with real-time block scanning and activity analysis
+  - Implemented HotPoolFetcher trait for standardized hot pool detection across DEXs
+  - Added PumpfunHotFetcher for Pump.fun hot pool monitoring via on-chain analysis
+  - Introduced HotSyncManager for coordinating multiple hot pool fetchers
+  - Real-time block transaction analysis with activity-based pool scoring
+
+- **Pump.fun Integration**: Complete Pump.fun ecosystem support via hot-sync
+
+  - Added Pump.fun hot pool fetcher with RPC-based block scanning
+  - Implemented pump.fun activity analysis with transaction filtering
+  - Added pump.fun pool types (PumpfunBondingCurve, PumpfunAmm) to core data models
+  - Enhanced pool type system to support pump.fun pool classification
+  - Rate-limited RPC requests with retry logic for reliable pump.fun data fetching
+
+- **Hot Pool Data Models**: New data structures for hot pool tracking
+
+  - Added HotPool model with activity metrics (tx_count, volume, unique_traders, hotness_score)
+  - Implemented HotSyncResult for aggregating hot pool scan results
+  - Added hotness scoring algorithm based on activity, volume, and recency
+  - Enhanced pool activity tracking with block-level granularity
+
+### Enhanced
+
+- **Pool Sync Validation**: Improved sync configuration validation and error handling
+
+  - Added comprehensive DEX name validation with helpful error messages
+  - Enhanced pool type validation with detailed available options
+  - Special handling for pump.fun with guidance to use hot-sync instead of regular sync
+  - Better error messages with actionable suggestions for invalid configurations
+
+- **Database Operations**: New hot pool database operations
+
+  - Added HotPoolOperations for hot pool CRUD operations with Supabase
+  - Implemented batch upsert operations for efficient hot pool storage
+  - Enhanced database schema support for hot pool data structures
+  - Added hot pool timestamp tracking and update management
+
+### Added
+
+- **Hot-Sync Command Infrastructure**: New command structure for hot pool operations
+
+  - Added hot_sync module with fetchers, manager, and command integration
+  - Implemented hot pool fetcher factory for creating DEX-specific fetchers
+  - Added hot pool scanning with configurable block ranges and activity thresholds
+  - Enhanced logging and progress tracking for hot pool operations
+
+- **Pump.fun RPC Integration**: Direct Solana RPC integration for pump.fun analysis
+
+  - Added rate-limited RPC client with retry logic and timeout handling
+  - Implemented block transaction fetching with full transaction details
+  - Added pump.fun program detection and activity analysis
+  - Enhanced RPC error handling with rate limiting and retry mechanisms
+
+- **Hot Pool Scoring System**: Advanced activity-based pool scoring
+
+  - Implemented hotness score calculation based on multiple activity metrics
+  - Added recency bonus for recent pool activity
+  - Enhanced pool ranking and sorting by hotness score
+  - Activity aggregation and deduplication across multiple blocks
+
+### Improved
+
+- **Pool Type System**: Enhanced pool type classification and support
+
+  - Extended PoolType enum with pump.fun pool types
+  - Enhanced pool type to DEX mapping with pump.fun support
+  - Improved pool type string conversion and serialization
+  - Better pool type validation and error handling
+
+- **Sync Configuration**: Enhanced sync configuration with better validation
+
+  - Added pre-sync configuration validation to catch errors early
+  - Improved DEX filter validation with comprehensive error messages
+  - Enhanced pool type filter validation with detailed help text
+  - Better separation between sync (HTTP API) and hot-sync (RPC) operations
+
+- **Statistics Tracking**: Updated statistics for hot pool integration
+
+  - Modified sync statistics to exclude pump.fun (handled via hot-sync)
+  - Enhanced pool counting and tracking for supported DEX types
+  - Better separation between regular sync and hot-sync statistics
+  - Improved pool type statistics aggregation
+
+### Technical
+
+- **Architecture**: New hot-sync architecture with modular design
+
+  - Added hot_sync module with fetchers, manager, and models
+  - Implemented async trait-based hot pool fetcher system
+  - Enhanced modular design with separation of concerns between sync types
+  - Added comprehensive error handling and logging throughout hot-sync system
+
+- **RPC Integration**: Direct Solana RPC integration for on-chain analysis
+
+  - Added RPC client with rate limiting and retry mechanisms
+  - Implemented block scanning and transaction analysis
+  - Enhanced RPC request handling with proper error recovery
+  - Added configurable RPC endpoints and timeout management
+
+- **Data Models**: Enhanced data models for hot pool support
+
+  - Added hot_pools.rs with HotPool and HotSyncResult structures
+  - Enhanced core.rs with pump.fun pool type support
+  - Improved model serialization and database compatibility
+  - Better data validation and type safety for hot pool operations
+
+### Fixed
+
+- **Pool Sync Manager**: Improved sync manager with better validation
+
+  - Fixed DEX validation to provide clear error messages for unsupported DEXs
+  - Enhanced pool type validation with comprehensive available options
+  - Better error handling for invalid sync configurations
+  - Improved user experience with actionable error messages and suggestions
+
 ## [0.1.29]
 
 ### Enhanced
