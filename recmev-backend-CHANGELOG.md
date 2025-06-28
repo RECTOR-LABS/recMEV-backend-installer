@@ -1,5 +1,107 @@
 # Changelog
 
+## [0.3.6]
+
+### Enhanced
+
+- **Meteora Pool Fetching Optimization**: Streamlined Meteora pool fetching with Universal Search API focus
+
+  - Simplified DAMM v1 and DAMM v2 pool fetching to use Universal Search API exclusively for high-liquidity pools
+  - Removed deprecated multi-token stable pool and memecoin pool fetching endpoints
+  - Improved API call efficiency by focusing on Universal Search for better pool discovery
+  - Enhanced logging messages to clearly indicate Universal Search usage for DAMM pools
+
+- **Database Schema Simplification**: Further database schema cleanup for improved performance
+
+  - Removed additional unused token symbol and name columns from pool operations
+  - Simplified pool data models by removing unnecessary token metadata fields
+  - Streamlined database operations with reduced column overhead
+  - Enhanced database efficiency by focusing on essential pool data only
+
+- **Pool Type System Optimization**: Simplified pool type classification and filtering
+  - Removed deprecated pool subtypes (memecoin, multi-token stable, launch pools)
+  - Streamlined pool type filtering to focus on core pool types (DLMM, DAMM v1, DAMM v2, Stake2Earn)
+  - Enhanced pool type validation with cleaner error messages
+  - Improved pool categorization logic for better performance
+
+### Added
+
+- **Enhanced Database Operations**: New database management capabilities
+
+  - Added comprehensive table truncation functionality with SQL-based operations
+  - Implemented table count operations for pools, tokens, and hot pools
+  - Added fallback mechanisms for database operations with multiple endpoint support
+  - Enhanced database statistics tracking with improved count methods
+
+- **Improved Error Handling**: Better database operation error handling
+  - Added multiple RPC endpoint fallback for SQL operations
+  - Enhanced error messages with actionable guidance for permission issues
+  - Improved database operation reliability with retry mechanisms
+  - Better handling of database connection and permission errors
+
+### Improved
+
+- **Pool Statistics**: Enhanced pool statistics and tracking
+
+  - Simplified pool statistics to focus on active pool types
+  - Removed deprecated pool type counters for better clarity
+  - Enhanced statistics aggregation with streamlined pool type support
+  - Improved pool counting accuracy with simplified categorization
+
+- **API Configuration**: Optimized API configuration and delay management
+  - Standardized API delay configuration across all fetchers
+  - Simplified API call timing with consistent delay mechanisms
+  - Enhanced API rate limiting with unified configuration approach
+  - Improved API reliability with standardized timing controls
+
+### Technical
+
+- **Code Cleanup**: Comprehensive code simplification and optimization
+
+  - Removed unused pool subtype references throughout the codebase
+  - Simplified pool conversion logic by removing deprecated fields
+  - Enhanced code maintainability with cleaner data structures
+  - Improved performance through reduced complexity in pool operations
+
+- **Database Schema**: Continued database schema optimization
+  - Removed token symbol and name columns from pool schema
+  - Simplified pool data structures for better performance
+  - Enhanced database operations with reduced column overhead
+  - Improved data consistency with streamlined schema design
+
+### Fixed
+
+- **Pool Filtering**: Improved pool filtering logic and validation
+  - Fixed pool type filtering to use enum-based matching exclusively
+  - Removed deprecated subtype-based filtering logic
+  - Enhanced filter validation with cleaner pool type support
+  - Improved filtering accuracy with simplified type matching
+
+## [0.3.0]
+
+### Database Schema Changes
+
+- **Removed Unused Pool Columns**: Cleaned up database schema by removing unnecessary columns
+  - Removed `tick_spacing` column from pools table (not needed for simplified pool tracking)
+  - Removed `protocol_fee_rate` column from pools table (not used in current implementation)
+  - Removed `fund_fee_rate` column from pools table (not used in current implementation)
+  - Removed `token_a_name` column from pools table (token names not consistently used)
+  - Removed `token_b_name` column from pools table (token names not consistently used)
+  - Updated all pool data models and conversion logic to reflect schema changes
+  - Applied database migration to remove columns while preserving existing pool data
+  - Enhanced database efficiency and reduced storage overhead
+
+### Technical
+
+- **Code Cleanup**: Comprehensive code cleanup following database schema changes
+  - Updated PoolInfo struct in core.rs to remove unused fields
+  - Modified all pool conversion functions to remove references to removed fields
+  - Updated database operations to exclude removed columns from insert/update operations
+  - Cleaned up pool fetcher logic to remove unused field assignments
+  - Removed token name field references from all DEX conversion implementations
+  - Updated database schema definitions to reflect removed columns
+  - Maintained backward compatibility with existing pool data while removing unused fields
+
 ## [0.2.0]
 
 ### Major Features
@@ -157,7 +259,7 @@
 
 - **Pool Type Filter System**: Comprehensive pool type filtering capabilities
 
-  - Support for all Meteora pool types: dlmm, damm-v1, damm-v2, damm-v2-launch, memecoin-v1, memecoin-v2, stake2earn, multi-token-stable
+  - Support for all Meteora pool types: dlmm, damm-v1, damm-v2, stake2earn
   - Support for all Raydium pool types: amm-v4, clmm, cpmm
   - Support for Orca pool types: whirlpool, orca
   - Enhanced help documentation with detailed pool type explanations and examples
