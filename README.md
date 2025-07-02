@@ -13,8 +13,8 @@ The installer places the binary in the system binary directory (`/usr/local/bin`
 
 ## Components
 
-- `recmev-backend-v0.3.6-mac`: macOS binary
-- `recmev-backend-v0.3.6-linux`: Linux binary
+- `recmev-backend-v0.4.2-mac`: macOS binary
+- `recmev-backend-v0.4.2-linux`: Linux binary
 - `install.sh`: Installation script with platform detection
 
 ## What is recMEV Backend?
@@ -62,7 +62,7 @@ For users who prefer to perform the installation steps manually:
 mkdir -p ~/.recmev-backend
 
 # Download binary (replace OS with either 'linux' or 'mac' based on your system)
-curl -fsSL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/recmev-backend-v0.3.6-OS -o recmev-backend
+curl -fsSL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend-installer/main/recmev-backend-v0.4.2-OS -o recmev-backend
 
 # Install binary
 chmod +x recmev-backend
@@ -79,7 +79,8 @@ sh -c "$(curl -sSfL https://raw.githubusercontent.com/RECTOR-LABS/recMEV-backend
 
 Available versions:
 
-- v0.3.6 (latest) - Meteora pool fetching optimization with Universal Search API focus, database schema simplification, pool type system optimization, and enhanced database operations with SQL-based table management
+- v0.4.2 (latest) - Enhanced hot-sync architecture with unified block data processing, comprehensive hot pool validation system with on-chain verification, optimized transaction filtering and analysis, improved hot pool data models with dual token structure, complete database schema updates for hot pools, and fixed Meteora pool type classification
+- v0.3.6 - Meteora pool fetching optimization with Universal Search API focus, database schema simplification, pool type system optimization, and enhanced database operations with SQL-based table management
 - v0.2.0 - Hot-Sync system for real-time pool activity monitoring, complete Pump.fun integration via RPC, and enhanced pool validation with comprehensive error handling
 - v0.1.29 - Advanced pool type filtering system, pagination control for testing, Meteora Multi-Token Stable pool support, and enhanced configuration migration
 - v0.1.25 - Enhanced pool filtering system with per-type/subtype allocation, improved Raydium CPMM integration, and comprehensive resource monitoring

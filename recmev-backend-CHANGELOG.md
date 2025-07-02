@@ -1,5 +1,138 @@
 # Changelog
 
+## [0.4.2]
+
+### Major Features
+
+- **Enhanced Hot-Sync Architecture**: Comprehensive improvements to real-time pool monitoring system
+
+  - Added unified block data processing with optimized transaction filtering
+  - Implemented advanced block analysis for all enabled DEXs with transaction pre-filtering
+  - Enhanced HotSyncManager with improved block scanning and activity detection
+  - Added comprehensive validation system for hot pools before database storage
+
+- **Hot Pool Validation System**: New robust validation framework for hot pool data integrity
+
+  - Added PoolValidator with comprehensive on-chain validation
+  - Implemented validation caching to improve performance and reduce RPC calls
+  - Added pattern-based validation to filter out invalid or problematic pools
+  - Enhanced validation with format checking, timestamp validation, and activity reasonableness checks
+
+- **Optimized Transaction Processing**: Advanced transaction filtering and analysis
+
+  - Added target program identification for efficient transaction filtering
+  - Implemented DEX-specific transaction filtering to reduce processing overhead
+  - Enhanced block analysis with pre-filtered transactions for improved performance
+  - Added transaction deduplication and aggregation for better data quality
+
+### Enhanced
+
+- **Hot Pool Data Models**: Improved data structures for hot pool tracking
+
+  - Updated HotPool model from single token/quote structure to dual token_a_mint/token_b_mint design
+  - Added BlockInfo structure for better block tracking in hot-sync results
+  - Enhanced HotSyncResult with detailed block scanning information
+  - Improved data consistency with standardized token pair representation
+
+- **Database Schema Updates**: Comprehensive database improvements for hot pools
+
+  - Added complete hot_pools table schema with indexes and triggers
+  - Implemented hot pool CRUD operations with batch upsert capabilities
+  - Added hot pool statistics tracking and aggregation functions
+  - Enhanced database performance with optimized indexes for hot pool queries
+
+- **Meteora Pool Type Improvements**: Fixed pool type classification for Meteora
+
+  - Corrected Meteora DAMM v1 pool type from "damm_v1" to "dynamic_amm" in API responses
+  - Updated pool type filtering to use correct "dynamic_amm" identifier
+  - Enhanced pool type conversion logic for accurate Meteora pool classification
+  - Improved pool type consistency across all Meteora API integrations
+
+### Added
+
+- **Advanced Pool Validation**: Comprehensive validation framework
+
+  - Added validation for known invalid pool patterns and system accounts
+  - Implemented on-chain existence verification for pool addresses
+  - Added token mint validation with format and content checking
+  - Enhanced validation with activity reasonableness checks and suspicious pattern detection
+
+- **Hot Pool Management**: New database operations for hot pool lifecycle
+
+  - Added get_hot_pools_by_address for targeted pool retrieval
+  - Implemented get_all_hot_pools for comprehensive pool management
+  - Added delete_hot_pool functionality for pool cleanup operations
+  - Enhanced hot pool statistics with count tracking and DEX-based aggregation
+
+- **Performance Optimization**: Enhanced system performance and efficiency
+
+  - Added pool deduplication and aggregation to prevent duplicate entries
+  - Implemented rate-limited RPC requests with intelligent retry logic
+  - Enhanced block scanning with optimized transaction filtering
+  - Added validation caching to reduce redundant validation operations
+
+### Improved
+
+- **Hot-Sync Manager**: Enhanced coordination and processing capabilities
+
+  - Improved block data fetching with unified transaction processing
+  - Enhanced DEX-specific analysis with optimized transaction filtering
+  - Added comprehensive error handling and logging throughout hot-sync operations
+  - Better resource management with rate limiting and retry mechanisms
+
+- **Database Operations**: Enhanced database interaction and performance
+
+  - Added comprehensive statistics functions for hot pools and token mints
+  - Improved count operations with proper header parsing and fallback mechanisms
+  - Enhanced database schema with automatic timestamp updates and triggers
+  - Better error handling for database operations with detailed error messages
+
+- **Pool Data Consistency**: Improved data quality and standardization
+
+  - Standardized token pair representation across all hot pool operations
+  - Enhanced pool address validation to prevent system account misclassification
+  - Improved token mint validation with comprehensive format checking
+  - Better data integrity with validation before database storage
+
+### Technical
+
+- **Validation Architecture**: New comprehensive validation system
+
+  - Added validation.rs module with PoolValidator and ValidationResult structures
+  - Implemented caching system for validation results to improve performance
+  - Enhanced validation with multiple check layers (format, patterns, on-chain, activity)
+  - Added configurable validation parameters and known invalid pattern management
+
+- **Database Schema Evolution**: Enhanced database structure for hot pools
+
+  - Added hot_pools table with comprehensive indexing strategy
+  - Implemented automatic timestamp management with triggers
+  - Enhanced schema with performance-optimized indexes for common queries
+  - Added support for hot pool statistics and aggregation operations
+
+- **Code Architecture**: Improved modularity and maintainability
+
+  - Enhanced hot_sync module structure with validation integration
+  - Improved data model consistency with standardized token pair handling
+  - Better error handling and logging throughout the hot-sync system
+  - Enhanced code organization with clear separation of concerns
+
+### Fixed
+
+- **Meteora Pool Type Classification**: Corrected pool type identification
+
+  - Fixed DAMM v1 pool type from "damm_v1" to "dynamic_amm" for accurate API responses
+  - Corrected pool type filtering to use proper "dynamic_amm" identifier
+  - Enhanced pool type conversion logic for consistent Meteora pool handling
+  - Improved pool type validation and error handling
+
+- **Hot Pool Data Integrity**: Enhanced data quality and validation
+
+  - Fixed pool address validation to prevent system accounts from being classified as pools
+  - Improved token mint validation with comprehensive format and content checking
+  - Enhanced pool deduplication to prevent duplicate entries in database
+  - Better handling of invalid or corrupted pool data with comprehensive validation
+
 ## [0.3.6]
 
 ### Enhanced
