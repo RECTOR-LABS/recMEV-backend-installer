@@ -25,4 +25,5 @@ temp/
 tmp/
 
 # Claude AI files
+.claude/
 CLAUDE.md 
